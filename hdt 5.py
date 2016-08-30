@@ -1,6 +1,3 @@
-Python 2.7.12 (v2.7.12:d33e0cf91556, Jun 27 2016, 15:19:22) [MSC v.1500 32 bit (Intel)] on win32
-Type "copyright", "credits" or "license()" for more information.
->>> # ******************************************************************************
 # -*- coding: cp1252 -*-
 # Christian Morales - 15015
 # José Luis Méndez - 15024
@@ -18,55 +15,56 @@ global
 def newProcess(env, name, unit, cantRAM, io, MEMORY, INST):
 
 
-init_STRT = env.now # Se inicia un nuevo proceso
-	print ('El proceso %s fue creado durante las %s U.D.T' % (name, init_STRT))	# Se imprime la instruccion
+start = env.now # Se inicia un nuevo proceso
+	print ("proceso:",name," udt:", strart) # Se imprime la instruccion
 	
-	global time_TOT, time_PRCS, time_IO, capacidad_PRCS
+	global TOTALTIME, TIMEP, tiempoIO, procesos
 
-	with ram.get(mem) as req:
-		yield req
-		init_RDY = env.now
-		print ('El proceso %s ha pasado al estado ready durante las %s U.D.T.' % (name, init_RDY))
+	with cantRAM.get(MEMORY) as firstRequest:
+		yield firstRequest
+		ready = env.now
+		print ("proceso:",name," udt:", ready )
 
-		while (ins > 0): 
-			with unit.request() as req2:
-				yield req2
-				init_PRCS = env.now 
-				print ('El proceso %s se ha empezado a procesar durante las %s U.D.T' % (name, init_PRCS))
+		while (INST > 0): 
+			with unit.request() as secondRequest:
+				yield secondRequest
+				procesosInit = env.now 
+				print ("proceso:",name," udt:", procesosInit)
 
-				yield env.timeout(time_PRCS)
-				exit_PRCS = env.now 
-				print ('El proceso %s se ha terminado de procesar durante las %s U.D.T' % (name, exit_PRCS))
+				yield env.timeout(TIMEP)
+				procesosEnd = env.now 
+				print ("proceso:",name," udt:", procesosEnd)
 
-				if (ins < capacidad_PRCS):
-					term_PRCS = env.now 
-					print ('El proceso %s ha finalizado durante las %s U.D.T' % (name, term_PRCS))
-					term_PRCS = env.now
-					temp_PRCS_time = term_PRCS - init_STRT
-					lista.append(temp_PRCS_time)
-					time_TOT = time_TOT + temp_PRCS_time	
-					ram.put(mem)	
-					ins = 0		
+				if (INST < procesos):
+					terminated = env.now 
+					print ("proceso:",name," udt:", terminated)
+					terminated = env.now
+					TIMEP1 = terminated - start
+					ARRAY.append(temp_PRCS_time)
+					TOTALTIME = TOTALTIME + TIMEP1
+					cantRAM.put(MEMORY)	
+					INST = 0		
 				else:
-					ins -= capacidad_PRCS	
+					INST -= procesos	
 					if (random.randint(1,2) == 1):
-						with io.request() as req3:
-							yield req3
-							init_IO = env.now
-							print ('El proceso %s ha iniciado etapa I/O durante las %s U.D.T' % (name, init_IO))
+						with io.request() as thirdRequest:
+							yield thirdRequest
+							ioInit = env.now
+							print ("proceso:",name," udt:", ioInit)
 
-							time_Waiting_IO = random.randint(1,time_IO)
-							yield env.timeout(time_Waiting_IO)
-							exit_IO = env.now
-							temp_PRCS_time = exit_IO - init_STRT
-							lista.append(temp_PRCS_time)
-							time_TOT = time_TOT + temp_PRCS_time
+							lookIO = random.randint(1,tiempoIO)
+							yield env.timeout(lookIO)
+							endIO = env.now
+							temp_PRCS_time = endIO - start
+							ARRAY.append(temp_PRCS_time)
+							TOTALTIME = TOTALTIME + TIMEP1
 
-							print ('El proceso %s ha finalizado etapa I/O durante las %s U.D.T' % (name, exit_IO))
-
-
+							print ("proceso:",name," udt:", exit_IO)
 
 
+
+
+):
 
 
 
