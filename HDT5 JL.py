@@ -1,7 +1,7 @@
 # -*- coding: cp1252 -*-
 # Christian Morales - 15015
-# José Luis Méndez - 15024
-# Descripción: 
+# JosÃ© Luis MÃ©ndez - 15024
+# DescripciÃ³n: 
 # ******************************************************************************
 
 # L I B R E R I A S
@@ -13,14 +13,14 @@ import random
 # *****************************************************************************
 
 # S I M U L A C I O N
-env = simpy.Environment() # Se crea el ambiente para simulación
+env = simpy.Environment() # Se crea el ambiente para simulaciÃ³n
 CPU = simpy.Resource(env, capacity=1) # Un solo CPU
 RAM = simpy.Container(env, capacity = 100, init=100) # Se genera la RAM con 100
 IO = simpy.Resource(env, capacity=2)
 
 # C O N S T A N T E S  Y  V A R I A B L E S - G L O B A L E S
 global PROCESOS, TIMEP, INSTMAX, TOTALTIME, ARRAY
-PROCESOS = 25       #cantidad de procesos a ejecutar
+PROCESOS = 200       #cantidad de procesos a ejecutar
 TIMEP = 1           #tiempo en ejecutar un proceso
 INSTMAX = 1         #cantidad maxima de instrucciones posibles a ejecutar
 TOTALTIME = 0.0
@@ -31,7 +31,7 @@ SEED = 42 # Genera la misma serie random
 random.seed(SEED)
 
 # D I S T.  E X P O N E N C I A L
-INTERVAL = 10       #intervalo - capacidad de procesos
+INTERVAL = 1       #intervalo - capacidad de procesos
 EXPO = random.expovariate(1.0/INTERVAL)
 
 # *****************************************************************************
@@ -39,9 +39,8 @@ EXPO = random.expovariate(1.0/INTERVAL)
 # *****************************************************************************
 def newProcess(env, name, unit, cantRAM, io, MEMORY, INST):
     start = env.now # Se inicia un nuevo proceso
-    print ("proceso:",name," udt:", start) # Se imprime la instruccion
-    print ('El proceso %s fue creado durante las %s U.D.T' % (name, start))	# Se imprime la instruccion
-
+    print ('proceso:',name,' udt:', start) # Se imprime la instruccion
+    
     global TOTALTIME, TIMEP, tiempoIO, PROCESOS
 
     with cantRAM.get(MEMORY) as firstRequest:
@@ -114,12 +113,12 @@ PROM = (TOTALTIME/PROCESOS)
 print("El promedio de tiempo de procesamiento es: %f" % PROM)
 
 # D E S V.  E S T A N D A R
-temporal = 0        #Variable temporal almacenará la sumatoria
-#Con un arreglo se hará la sumatoria de datos
+temporal = 0        #Variable temporal almacenarÃ¡ la sumatoria
+#Con un arreglo se harÃ¡ la sumatoria de datos
 for i in ARRAY:
     temporal += (i-PROM)**2     #La sumatoria de:
                                     #cada dato - el promedio elevado al cuadrado
 
-DESV = (temporal/ (PROCESOS-1) )**0.5       #Raíz cuadrada de la sumatoria anterior
+DESV = (temporal/ (PROCESOS-1) )**0.5       #RaÃ­z cuadrada de la sumatoria anterior
                                             #partida n-1
-print "La desviación estándar es: ", DESV
+print "La desviaciÃ³n estÃ¡ndar es: ", DESV
